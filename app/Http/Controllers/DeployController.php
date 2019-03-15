@@ -16,8 +16,13 @@ class DeployController extends Controller
      $localToken = config('app_deploy_secret');
      $localHash = 'sha1=' . hash_hmac('sha1', $githubPayload, $localToken, false);
 
+     Log::debug($localHash);
+     
+     Log::debug($githubHash);
+     
+
      if (hash_equals($githubHash, $localHash)) {
-      Log::debug(base_path());
+      
           $root_path = base_path();
           $process = new Process('cd ' . $root_path . '; ./deploy.sh');
           $process->run(function ($type, $buffer) {
